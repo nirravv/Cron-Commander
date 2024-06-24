@@ -33,3 +33,16 @@ body {
     background-color: #0056b3; /* Darker shade on hover */
     border-color: #0056b3; /* Darker shade on hover */
 }
+
+.text-center p {
+    margin-bottom: 0; /* Remove default paragraph margin */
+}
+
+.text-center a {
+    color: #007bff; /* Blue color for links */
+    text-decoration: none; /* Remove underline from links */
+}
+
+.text-center a:hover {
+    text-decoration: underline; /* Underline on hover */
+}

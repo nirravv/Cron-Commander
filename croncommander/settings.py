@@ -115,5 +115,5 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = '/cron-manager/'
+LOGIN_REDIRECT_URL = 'accounts:login'
 APPEND_SLASH = False

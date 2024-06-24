@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from .decorators import cors  # Import your custom CORS decorator
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib import messages
+from django.contrib.auth import logout
 
 
 # View for rendering HTML pages
@@ -66,3 +67,8 @@ def user_login(request):
             return JsonResponse({'error': 'Invalid username or password'}, status=400)
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('accounts:login')  # Redirect to the login page after logout

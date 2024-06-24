@@ -17,6 +17,27 @@ body {
     font-size: 28px; /* Increase font size */
 }
 
+.cron-job-list {
+    margin-top: 20px;
+}
+
+.cron-job {
+    background-color: #495057; /* Dark gray background for cron job */
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.cron-job-description {
+    font-weight: bold;
+    color: #f8f9fa; /* Light text color */
+}
+
+.cron-job-command {
+    margin-top: 5px;
+    color: #adb5bd; /* Lighter gray text color */
+}
+
 .btn-primary {
     background-color: #007bff; /* Bootstrap primary color for button background */
     border-color: #007bff; /* Bootstrap primary color for button border */

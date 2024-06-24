@@ -7,12 +7,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from .decorators import cors  # Import your custom CORS decorator
 import paramiko  # For SSH connection
+from datetime import datetime
+from cron_descriptor import get_description
+
 
 @login_required
 def cron_manager_home(request):
     return render(request, 'cron_manager/index.html', {'username': request.user.username})
 
 # Custom CORS decorator to handle CORS headers
+@login_required
 @cors(methods=['POST'])
 @csrf_exempt  # Exempt from CSRF protection since we handle it ourselves
 @require_http_methods(['POST'])
@@ -37,8 +41,24 @@ def fetch_cron_jobs(request):
             # Close SSH connection
             client.close()
 
+            formatted_jobs = []
+            for line in cron_jobs.splitlines():
+                if line.strip() and not line.strip().startswith('#'):
+                    # Parse cron schedule
+                    schedule_fields = line.strip().split()
+                    cron_expression = ' '.join(schedule_fields[:5])
+                    command = ' '.join(schedule_fields[5:])
+
+                    # Use cron-descriptor to get a human-readable description
+                    description = get_description(cron_expression)
+
+                    formatted_jobs.append({
+                        'description': description,
+                        'command': command
+                    })
+
             # Pass cron_jobs data to the template for rendering
-            return render(request, 'cron_manager/fetched_cron_jobs.html', {'cron_jobs': cron_jobs})
+            return render(request, 'cron_manager/fetched_cron_jobs.html', {'formatted_jobs': formatted_jobs})
 
         except Exception as e:
             return HttpResponse(f'Error: {e}')

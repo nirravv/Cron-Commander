@@ -61,7 +61,7 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user:
             auth_login(request, user)
-            return redirect('cron_manager:cron-manager-home')  # Redirect to cron-manager app
+            return redirect('cron_manager:cron_manager_home')  # Redirect to cron-manager app
         else:
             return JsonResponse({'error': 'Invalid username or password'}, status=400)
     else:

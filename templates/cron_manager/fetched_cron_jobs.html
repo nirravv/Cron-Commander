@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetched Cron Jobs</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/cron_manager/fetched_cron_jobs.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="form-title">Cron Jobs Running on Server</h1>
+        <pre>{{ cron_jobs }}</pre>
+        <div class="text-center">
+            <a href="{% url 'cron_manager:cron_manager_home' %}" class="btn btn-primary">Fetch Again</a>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

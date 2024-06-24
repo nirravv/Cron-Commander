@@ -1,5 +1,6 @@
 from pathlib import Path
-
+from cryptography.fernet import Fernet
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'cron_manager',
 ]
 
 MIDDLEWARE = [
@@ -68,7 +70,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -117,3 +118,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'accounts:login'
 APPEND_SLASH = False
+
+# Generate a new key (do this once and store it safely)
+# key = Fernet.generate_key().decode()
+FERNET_KEY = os.getenv('FERNET_KEY', 'PcMWCA_zlgj1iXyRcV8gPfcOzyzsgmBtBIVG1odCAo4=')

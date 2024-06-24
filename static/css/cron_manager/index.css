@@ -37,3 +37,13 @@ body {
 .row {
     margin-top: 30px; /* Add top margin for spacing */
 }
+
+/* Add custom styles for index page */
+.list-group {
+    margin-top: 20px; /* Adjust top margin for server list */
+}
+
+.list-group-item {
+    background-color: #f8f9fa; /* Light background color for list items */
+    margin-bottom: 10px; /* Bottom margin between list items */
+}

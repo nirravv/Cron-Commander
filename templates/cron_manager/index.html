@@ -1,33 +1,27 @@
-<!-- index.html -->
+<!-- cron_manager_home.html -->
 {% extends 'cron_manager/base.html' %}
 {% load static %}
 
-{% block title %}Cron-Manager - Dashboard{% endblock %}
+{% block title %}Cron-Manager - Home{% endblock %}
 
 {% block additional_css %}
     <link rel="stylesheet" href="{% static 'css/cron_manager/index.css' %}">
 {% endblock %}
 
 {% block content %}
-    <div class="centered-form">
-        <h1 class="form-title">Server Credentials</h1>
-        <form method="POST" action="{% url 'cron_manager:fetch_cron_jobs' %}">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="hostname" class="form-label">Hostname</label>
-                <input type="text" class="form-control" id="hostname" name="hostname" required>
-            </div>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary btn-block">Fetch Cron Jobs</button>
-            </div>
-        </form>
+    <div class="container mt-4">
+        <h2>Server Credentials</h2>
+        {% if server_credentials %}
+            <ul class="list-group mb-4">
+                {% for credential in server_credentials %}
+                    <li class="list-group-item">
+                        <strong>Hostname:</strong> {{ credential.hostname }} <br>
+                        <strong>Username:</strong> {{ credential.username }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No servers added yet.</p>
+        {% endif %}
     </div>
 {% endblock %}

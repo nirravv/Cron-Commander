@@ -1,0 +1,30 @@
+/* style.css */
+
+body {
+    background-color: #343a40; /* Dark background color */
+    color: #f8f9fa; /* Light text color */
+}
+.container {
+    max-width: 400px; /* Limit container width for better readability */
+    margin: 90px auto; /* Center the container with top and bottom margin */
+}
+.form-title {
+    color: #007bff; /* Blue color for title */
+    text-align: center; /* Center-align the title */
+    margin-bottom: 50px; /* Add bottom margin for spacing */
+    font-size: 26px; /* Increase font size */
+    margin-top: 40px; /* Adjust top margin */
+}
+.form-control {
+    background-color: #495057; /* Dark gray background for input */
+    border-color: #495057; /* Dark gray border color */
+    color: #f8f9fa; /* Light text color */
+}
+.btn-primary {
+    background-color: #007bff; /* Bootstrap primary color for button background */
+    border-color: #007bff; /* Bootstrap primary color for button border */
+}
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    border-color: #0056b3; /* Darker shade on hover */
+}

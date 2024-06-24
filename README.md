@@ -4,6 +4,20 @@
 
 Cron-Commander is a web application built using Django that allows users to manage cron jobs on remote servers. Users can register, log in, and securely fetch cron jobs from their servers using SSH credentials.
 
+## Screenshots
+
+### Register Page
+![Register Page](project_images/register.png)
+
+### Login Page
+![Login Page](project_images/login.png)
+
+### Fetched Cron Jobs
+![Fetched Cron Jobs](project_images/fetched_cronjobs.png)
+
+### Cron Manager Home
+![Cron Manager Home](project_images/cron_manager.png)
+
 ## Installation
 
 ### Requirements

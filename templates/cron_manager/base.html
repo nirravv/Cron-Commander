@@ -11,6 +11,7 @@
         .container {
             margin-top: 20px; /* Adjust as needed */
         }
+        
     </style>
 </head>
 <body>
@@ -22,10 +23,13 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto d-flex align-items-center ml-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+                            <span class="navbar-text me-3">Welcome, {{ user.username }}!</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" href="{% url 'accounts:logout' %}">Logout</a>
                         </li>
                     {% endif %}
                 </ul>

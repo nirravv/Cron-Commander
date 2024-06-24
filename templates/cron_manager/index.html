@@ -2,7 +2,6 @@
 {% extends 'cron_manager/base.html' %}
 {% load static %}
 
-
 {% block title %}Cron-Manager - Dashboard{% endblock %}
 
 {% block additional_css %}
@@ -10,10 +9,9 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-6">
-            <h2>Server Credentials</h2>
-            <form method="POST" action="{% url 'cron_manager:fetch_cron_jobs' %}">
+    <div class="centered-form">
+        <h1 class="form-title">Server Credentials</h1>
+        <form method="POST" action="{% url 'cron_manager:fetch_cron_jobs' %}">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="hostname" class="form-label">Hostname</label>
@@ -30,7 +28,6 @@
             <div class="text-center">
                 <button type="submit" class="btn btn-primary btn-block">Fetch Cron Jobs</button>
             </div>
-            </form>
-        </div>
+        </form>
     </div>
 {% endblock %}

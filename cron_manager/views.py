@@ -22,8 +22,9 @@ def add_server(request):
         if form.is_valid():
             server_credentials = form.save(commit=False)
             server_credentials.user = request.user  # Assuming user is authenticated
+            print(server_credentials, "credsss")
             server_credentials.save()
-            messages.success(request, 'Server credentials added successfully.')
+            messages.success(request, f'{server_credentials.hostname} server\'s credentials added successfully.')
             return redirect('cron_manager:cron_manager_home')
         else:
             messages.error(request, 'Error adding server credentials. Please check the form.')

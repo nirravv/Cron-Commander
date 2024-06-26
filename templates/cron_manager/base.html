@@ -34,16 +34,9 @@
                 <ul class="navbar-nav me-auto">
                     <!-- Add other navbar links here -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link 1</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link 2</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link 3</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cron_manager:add_server' %}">Add Server</a> <!-- Replace "#" with add server URL -->
+                        <a class="nav-link" href="{% url 'cron_manager:add_server' %}">
+                            <i class="fas fa-server me-2"></i> Add Server
+                        </a>
                     </li>
                 </ul>
 

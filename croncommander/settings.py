@@ -116,8 +116,8 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'accounts:login'
-APPEND_SLASH = False
+LOGIN_REDIRECT_URL = 'accounts:user_login'
+APPEND_SLASH = True
 
 # Generate a new key (do this once and store it safely)
 # key = Fernet.generate_key().decode()

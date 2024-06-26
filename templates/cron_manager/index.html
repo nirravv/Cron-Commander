@@ -11,6 +11,14 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Server Credentials</h2>
+    <!-- Display Django messages -->
+    {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-dark" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+    {% endif %}
     {% if server_credentials %}
         <div class="row">
             {% for credential in server_credentials %}

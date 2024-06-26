@@ -40,7 +40,6 @@ Cron-Commander is a web application built using Django that allows users to mana
 
    ```
    git clone https://github.com/nirravv/Cron-Commander.git
-   cd Cron-Commander
    ```
    
 2. **Setup virtual environment:**

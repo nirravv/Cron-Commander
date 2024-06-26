@@ -1,13 +1,11 @@
 # cron_manager/views.py
 
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse,JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
-from .decorators import cors  # Import your custom CORS decorator
 import paramiko  # For SSH connection
+from paramiko import SSHClient, AutoAddPolicy, SSHException
 from datetime import datetime
+from django.contrib import messages
 from cron_descriptor import get_description
 from .models import *
 from . forms import ServerCredentialsForm
@@ -17,23 +15,52 @@ def cron_manager_home(request):
     user_credentials = ServerCredentials.objects.filter(user=request.user)
     return render(request, 'cron_manager/index.html', {'server_credentials': user_credentials})
 
-
-# Custom CORS decorator to handle CORS headers
 @login_required
-@cors(methods=['POST'])
-@csrf_exempt  # Exempt from CSRF protection since we handle it ourselves
-@require_http_methods(['POST'])
-def fetch_cron_jobs(request):
+def add_server(request):
     if request.method == 'POST':
-        hostname = request.POST.get('hostname')
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        form = ServerCredentialsForm(request.POST)
+        if form.is_valid():
+            server_credentials = form.save(commit=False)
+            server_credentials.user = request.user  # Assuming user is authenticated
+            server_credentials.save()
+            messages.success(request, 'Server credentials added successfully.')
+            return redirect('cron_manager:cron_manager_home')
+        else:
+            messages.error(request, 'Error adding server credentials. Please check the form.')
+    else:
+        form = ServerCredentialsForm()
+    
+    return render(request, 'cron_manager/add_server.html', {'form': form})
+
+
+@login_required
+def delete_server_credential(request, credential_id):
+    credential = get_object_or_404(ServerCredentials, id=credential_id, user=request.user)
+    
+    if request.method == 'POST':
+        credential.delete()
+        return redirect('cron_manager:cron_manager_home')  # Redirect to the home page or any other appropriate page after deletion
+    
+    # Optionally handle GET request (direct link click) by redirecting or showing a message
+    return redirect('cron_manager:cron_manager_home')  # Redirect to the home page if accessed via GET (direct link click)
+
+
+@login_required
+def fetch_cron_jobs(request, server_id):
+    
+    server = get_object_or_404(ServerCredentials, pk=server_id, user=request.user)
+
+    if request.method == 'POST':
+        hostname = server.hostname
+        username = server.username
+        decrypt_password = server.get_decrypted_password()
+        password = decrypt_password  # Assuming you have a field for encrypted password
 
         try:
             # Establish SSH connection to the server
-            client = paramiko.SSHClient()
-            client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            client.connect(hostname, username=username, password=password)
+            client = SSHClient()
+            client.set_missing_host_key_policy(AutoAddPolicy())
+            client.connect(hostname, username=username, password=password, timeout=10)  # Adjust timeout as needed
 
             # Execute command to fetch cron jobs
             stdin, stdout, stderr = client.exec_command('crontab -l')
@@ -63,31 +90,14 @@ def fetch_cron_jobs(request):
             # Pass cron_jobs data to the template for rendering
             return render(request, 'cron_manager/fetched_cron_jobs.html', {'formatted_jobs': formatted_jobs})
 
+        except SSHException as e:
+            # Custom error message for SSH connection issues
+            messages.error(request, 'Error connecting to SSH server. Please check your credentials and server availability.')
+        except TimeoutError as e:
+            # Custom error message for timeout issues
+            messages.error(request, 'Connection timed out. Please ensure the server is reachable and try again.')
         except Exception as e:
-            return HttpResponse(f'Error: {e}')
+            # General catch-all error message
+            messages.error(request, f'Error: {e}')
 
-    return HttpResponse(status=405)  # Method Not Allowed
-
-#Render HTML Page to User.
-def add_server(request):
-    return render(request, 'cron_manager/add_server.html')
-
-@csrf_exempt
-@require_http_methods(['POST'])
-@cors(methods=['POST'])
-def add_server_api(request):
-    if request.method == 'POST':
-        form = ServerCredentialsForm(request.POST)
-        if form.is_valid():
-            server_credentials = form.save(commit=False)
-            server_credentials.user = request.user
-            server_credentials.save()
-            # Check if the request is from an API client
-            if request.content_type == 'application/json':
-                return JsonResponse({'status': 'success'}, status=201)
-            else:
-                # Redirect to another URL upon successful creation for frontend GUI
-                return redirect('cron_manager:cron_manager_home')
-        else:
-            return JsonResponse({'errors': form.errors}, status=400)
-    return JsonResponse({'error': 'Invalid method'}, status=405)
+    return render(request, 'cron_manager/fetched_cron_jobs.html', {'server': server})

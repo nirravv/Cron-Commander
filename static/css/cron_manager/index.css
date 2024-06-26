@@ -1,5 +1,3 @@
-/* index.css */
-
 body {
     background-color: #343a40; /* Dark background color */
     color: #f8f9fa; /* Light text color */
@@ -27,6 +25,7 @@ body {
 .btn-primary {
     background-color: #007bff; /* Bootstrap primary color for button background */
     border-color: #007bff; /* Bootstrap primary color for button border */
+    width: auto; /* Set button width to auto */
 }
 
 .btn-primary:hover {
@@ -35,15 +34,53 @@ body {
 }
 
 .row {
+    display: flex;
+    flex-wrap: wrap;
     margin-top: 30px; /* Add top margin for spacing */
 }
 
-/* Add custom styles for index page */
-.list-group {
-    margin-top: 20px; /* Adjust top margin for server list */
+.col-md-4 {
+    display: flex;
+    flex-direction: column; /* Stack columns vertically */
+    margin-bottom: 30px; /* Add bottom margin for spacing */
 }
 
-.list-group-item {
-    background-color: #f8f9fa; /* Light background color for list items */
-    margin-bottom: 10px; /* Bottom margin between list items */
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure cards take full height of parent (column) */
 }
+
+.card-body {
+    flex: 1; /* Let card body grow to fill space */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Push buttons to bottom */
+}
+
+.dark-card {
+    background-color: #495057; /* Slightly lighter dark color for the card */
+    color: #f8f9fa; /* Light text color */
+    border: 1px solid #6c757d; /* Optional: border to distinguish cards */
+}
+
+.dark-card .card-title, 
+.dark-card .card-text {
+    color: #f8f9fa; /* Light text color for card content */
+}
+
+.dark-card .btn-primary,
+.dark-card .btn-danger {
+    margin-top: auto; /* Push buttons to bottom of card */
+}
+
+.dark-card .btn-primary {
+    background-color: #007bff; /* Primary button color */
+    border-color: #007bff;
+}
+
+.dark-card .btn-danger {
+    background-color: #dc3545; /* Danger button color */
+    border-color: #dc3545;
+}
+

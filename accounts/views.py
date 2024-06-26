@@ -1,29 +1,13 @@
 # accounts/views.py
-
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
-from .decorators import cors  # Import your custom CORS decorator
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib import messages
 from django.contrib.auth import logout
 
-
-# View for rendering HTML pages
-def login(request):
-    return render(request, 'accounts/login.html')
-
-def register(request):
-    return render(request, 'accounts/register.html')
-
-#Register User
-# Custom CORS decorator to handle CORS headers
-@cors(methods=['POST'])
-@csrf_exempt  # Exempt from CSRF protection since we handle it ourselves
-@require_http_methods(['POST'])
-def user_registration(request):
+# View for Accounts App
+#Register a user
+def user_register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -36,24 +20,15 @@ def user_registration(request):
             # Store success message in session
             messages.success(request, f'User {username} registered successfully. You can now login.')
             
-            # Check if the request is from an API client or frontend GUI
-            if request.content_type == 'application/json':
-                # Return JSON response for API clients
-                return JsonResponse({
-                    'username': user.username,
-                    'email': user.email
-                }, status=201)
-            else:
-                # Redirect to login page upon successful registration for frontend GUI
-                return redirect('/')
+            # Redirect to login page upon successful registration
+            return redirect('/')
         else:
-            return JsonResponse({'error': 'Please provide username, email, and password'}, status=400)
-    else:
-        return HttpResponse(status=405)  # Method Not Allowed
+            messages.error(request, 'Please provide username, email, and password')
+    
+    return render(request, 'accounts/register.html')
 
-#Login User
-@csrf_exempt
-@require_http_methods(['POST'])
+
+#User Login View
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -64,11 +39,11 @@ def user_login(request):
             auth_login(request, user)
             return redirect('cron_manager:cron_manager_home')  # Redirect to cron-manager app
         else:
-            return JsonResponse({'error': 'Invalid username or password'}, status=400)
-    else:
-        return JsonResponse({'error': 'Method not allowed'}, status=405)
+            messages.error(request, 'Invalid username or password')
+    
+    return render(request, 'accounts/login.html')
 
-
+#User Logout View.
 def user_logout(request):
     logout(request)
-    return redirect('accounts:login')  # Redirect to the login page after logout
+    return redirect('accounts:user_login')  # Redirect to the login page after logout

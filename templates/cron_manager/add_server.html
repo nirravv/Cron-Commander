@@ -12,7 +12,7 @@
 <div class="container">
     <div class="server-form">
         <h1 class="form-title">Add Server Credentials</h1>
-        <form method="POST" action="{% url 'cron_manager:add_server_api' %}">
+        <form method="POST" action="{% url 'cron_manager:add_server' %}">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="hostname" class="form-label">Hostname</label>

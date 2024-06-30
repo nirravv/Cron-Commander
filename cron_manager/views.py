@@ -21,8 +21,7 @@ def add_server(request):
         form = ServerCredentialsForm(request.POST)
         if form.is_valid():
             server_credentials = form.save(commit=False)
-            server_credentials.user = request.user  # Assuming user is authenticated
-            print(server_credentials, "credsss")
+            server_credentials.user = request.user 
             server_credentials.save()
             messages.success(request, f'{server_credentials.hostname} server\'s credentials added successfully.')
             return redirect('cron_manager:cron_manager_home')
@@ -32,6 +31,21 @@ def add_server(request):
         form = ServerCredentialsForm()
     
     return render(request, 'cron_manager/add_server.html', {'form': form})
+
+
+@login_required
+def edit_server(request, credential_id):
+    server_credential = ServerCredentials.objects.get(id=credential_id, user=request.user)
+    # server_credential = get_object_or_404(ServerCredentials, id=credential_id, user=request.user)
+    print(server_credential.encrypted_password)
+    form = ServerCredentialsForm(request.POST, instance=server_credential)
+
+    if form.is_valid():
+        print(form)
+        form.save()
+        return redirect('cron_manager:cron_manager_home')
+
+    return render(request, 'cron_manager/edit_server.html', {'server_credential': server_credential})
 
 
 @login_required

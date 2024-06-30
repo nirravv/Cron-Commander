@@ -25,9 +25,10 @@
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm dark-card">
                         <div class="card-body">
-                            <h5 class="card-title"><strong>Hostname:</strong> {{ credential.hostname }}</h5>
+                            <p class="card-title"><strong>Hostname:</strong> {{ credential.hostname }}</p>
                             <p class="card-text"><strong>Username:</strong> {{ credential.username }}</p>
                             <div class="d-flex justify-content-between align-items-center">
+                                <!-- View Cronjobs -->
                                 <form id="viewForm" action="{% url 'cron_manager:fetch_cron_jobs' credential.id %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-primary btn-icon">
@@ -35,6 +36,13 @@
                                     </button>
                                 </form>
                                 
+                                <form id="editForm" action="{% url 'cron_manager:edit_server' credential.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success btn-icon">
+                                        <i class="fas fa-pencil-alt"></i> 
+                                    </button>
+                                </form>
+
                                 <form id="deleteForm" action="{% url 'cron_manager:delete_server_credential' credential.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this server credential?');">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-danger btn-icon">
